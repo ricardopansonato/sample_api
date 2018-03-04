@@ -52,12 +52,19 @@ public class ProdutoController {
 	@PreAuthorize("@securityService.hasProtectedAccess()")
 	public ResponseEntity<?> get(@PathVariable(name = "id") String id, HttpServletRequest request) {
 		Produto produto = repository.findOne(id);
+		if (produto == null) {
+			return ResponseEntity.notFound().build();
+		}
 		return ResponseEntity.ok(new ProdutoResponse(produto));
 	}
 	
 	@RequestMapping(value = "produto/{id}", method = RequestMethod.DELETE)
 	@PreAuthorize("@securityService.hasProtectedAccess()")
 	public ResponseEntity<?> delete(@PathVariable(name = "id") String id, HttpServletRequest request) {
+		Produto produto = repository.findOne(id);
+		if (produto == null) {
+			return ResponseEntity.notFound().build();
+		}
 		repository.delete(id);
 		return ResponseEntity.accepted().build();
 	}
