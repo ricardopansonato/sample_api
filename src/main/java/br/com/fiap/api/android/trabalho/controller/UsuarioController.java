@@ -24,6 +24,10 @@ public class UsuarioController {
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<?> authenticationRequest(@RequestBody LoginRequest authenticationRequest,
 			Device device) throws AuthenticationException {
+		if (repository.findByUsuario(authenticationRequest.getUsuario()) != null) {
+			return ResponseEntity.badRequest().build();
+		}
+		
 		final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 		Usuario usuario = new Usuario(authenticationRequest.getUsuario(), bCryptPasswordEncoder.encode(authenticationRequest.getSenha()), "ADMIN");
 		repository.save(usuario);
