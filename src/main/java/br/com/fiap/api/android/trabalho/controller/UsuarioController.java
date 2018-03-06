@@ -27,6 +27,7 @@ public class UsuarioController {
 		final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 		Usuario usuario = new Usuario(authenticationRequest.getUsuario(), bCryptPasswordEncoder.encode(authenticationRequest.getSenha()), "ADMIN");
 		repository.save(usuario);
+		usuario.setSenha("");
 		return ResponseEntity.ok(usuario);
 	}
 }
